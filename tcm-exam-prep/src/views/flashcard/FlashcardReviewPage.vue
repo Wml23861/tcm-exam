@@ -1,0 +1,232 @@
+<template>
+  <div class="page-flashcard-review">
+    <!-- Header -->
+    <div class="review-header">
+      <button class="review-back" @click="goBack">
+        <span class="back-icon">&larr;</span>
+        <span>返回</span>
+      </button>
+      <h1 class="review-title">闪卡复习</h1>
+    </div>
+
+    <!-- Loading State -->
+    <div v-if="isLoading" class="review-loading">
+      <TcmSkeleton variant="rect" class="skeleton-card" />
+      <TcmSkeleton variant="text" class="skeleton-bar" />
+    </div>
+
+    <!-- Review Complete -->
+    <div v-else-if="isComplete" class="review-complete">
+      <div class="complete-icon">&#23436;</div>
+      <h2 class="complete-title">复习完成</h2>
+      <p class="complete-desc">
+        本次复习了 {{ store.todayStats.reviewed }} 张闪卡
+      </p>
+      <p class="complete-sub">系统已根据你的评分自动安排下次复习时间</p>
+      <div class="complete-actions">
+        <TcmButton variant="secondary" @click="goBack">
+          返回列表
+        </TcmButton>
+        <TcmButton variant="primary" @click="restartReview">
+          再来一轮
+        </TcmButton>
+      </div>
+    </div>
+
+    <!-- Empty Deck -->
+    <div v-else-if="!store.currentCard" class="review-loading">
+      <TcmEmpty description="暂无可复习的闪卡" />
+      <div class="empty-actions">
+        <TcmButton variant="primary" @click="goBack">
+          返回列表
+        </TcmButton>
+      </div>
+    </div>
+
+    <!-- Active Review -->
+    <div v-else class="review-active">
+      <!-- Progress -->
+      <div class="review-progress">
+        <FlashCardProgress
+          :current="store.deckProgress.current"
+          :total="store.deckProgress.total"
+        />
+      </div>
+
+      <!-- Flashcard -->
+      <div class="review-card-wrapper">
+        <FlashCard :card="store.currentCard" />
+      </div>
+
+      <!-- Rating Buttons -->
+      <FlashCardRating v-if="store.isFlipped" @rate="handleRate" />
+
+      <!-- Flip Hint -->
+      <div v-else class="flip-prompt">
+        <p>翻转卡片查看答案后进行评分</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { watch, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useRoute, useRouter } from 'vue-router'
+import { useFlashcardStore } from '@/stores/useFlashcardStore'
+import FlashCard from '@/components/flashcard/FlashCard.vue'
+import FlashCardRating from '@/components/flashcard/FlashCardRating.vue'
+import FlashCardProgress from '@/components/flashcard/FlashCardProgress.vue'
+import TcmButton from '@/components/ui/TcmButton.vue'
+import TcmSkeleton from '@/components/ui/TcmSkeleton.vue'
+import TcmEmpty from '@/components/ui/TcmEmpty.vue'
+
+const route = useRoute()
+const router = useRouter()
+const store = useFlashcardStore()
+
+const { isLoading, isDeckComplete: isComplete } = storeToRefs(store)
+const subjectId = route.params.subjectId as string | undefined
+
+async function handleRate(quality: number): Promise<void> {
+  await store.rateCard(quality)
+}
+
+async function restartReview(): Promise<void> {
+  await store.startReview(subjectId)
+}
+
+function goBack(): void {
+  router.push({ name: 'flashcards' })
+}
+
+onMounted(async () => {
+  await store.startReview(subjectId)
+})
+
+// When navigating to a different subject, restart the review
+watch(
+  () => route.params.subjectId,
+  async (newId) => {
+    await store.startReview(newId as string | undefined)
+  },
+)
+</script>
+
+<style scoped>
+.page-flashcard-review {
+  max-width: 600px;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.review-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: none;
+  background: none;
+  color: var(--tcm-text-secondary);
+  cursor: pointer;
+  font-size: var(--tcm-font-sm);
+  border-radius: var(--tcm-radius-sm);
+  transition: color 0.2s;
+}
+
+.review-back:hover {
+  color: var(--tcm-primary-500);
+}
+
+.back-icon {
+  font-size: var(--tcm-font-lg);
+}
+
+.review-title {
+  font-family: var(--tcm-font-decorative);
+  font-size: var(--tcm-font-2xl);
+  color: var(--tcm-text-primary);
+}
+
+.review-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeleton-card {
+  height: 280px;
+}
+
+.skeleton-bar {
+  width: 60%;
+}
+
+.review-complete {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.complete-icon {
+  font-size: 64px;
+  color: var(--tcm-jade-500);
+  font-family: var(--tcm-font-decorative);
+  margin-bottom: 16px;
+}
+
+.complete-title {
+  font-family: var(--tcm-font-decorative);
+  font-size: var(--tcm-font-2xl);
+  color: var(--tcm-text-primary);
+  margin-bottom: 8px;
+}
+
+.complete-desc {
+  font-size: var(--tcm-font-md);
+  color: var(--tcm-text-secondary);
+  margin-bottom: 4px;
+}
+
+.complete-sub {
+  font-size: var(--tcm-font-sm);
+  color: var(--tcm-text-disabled);
+  margin-bottom: 32px;
+}
+
+.complete-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.empty-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.review-active {
+  display: flex;
+  flex-direction: column;
+}
+
+.review-progress {
+  margin-bottom: 24px;
+}
+
+.review-card-wrapper {
+  margin-bottom: 8px;
+}
+
+.flip-prompt {
+  text-align: center;
+  margin-top: 24px;
+  font-size: var(--tcm-font-sm);
+  color: var(--tcm-text-disabled);
+}
+</style>

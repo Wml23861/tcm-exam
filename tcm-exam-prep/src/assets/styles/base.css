@@ -1,0 +1,61 @@
+/**
+ * 基础样式重置 & 全局样式
+ */
+
+@import './variables.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--tcm-font-family);
+  font-size: var(--tcm-font-base);
+  line-height: var(--tcm-leading-normal);
+  color: var(--tcm-text-primary);
+  background-color: var(--tcm-bg-base);
+}
+
+a {
+  color: var(--tcm-text-link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--tcm-bg-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tcm-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tcm-text-disabled);
+}
+
+/* 选中文本颜色 */
+::selection {
+  background-color: var(--tcm-primary-100);
+  color: var(--tcm-primary-700);
+}

@@ -1,0 +1,12 @@
+[
+  {"id":"zhongji-ch01","subjectId":"zhongji","title":"第一章 绪论","description":"中医学理论体系的形成与发展、中医学的基本特点","order":1,"sectionCount":3,"knowledgePointCount":8},
+  {"id":"zhongji-ch02","subjectId":"zhongji","title":"第二章 阴阳学说","description":"阴阳的基本概念、基本内容和在中医学中的应用","order":2,"sectionCount":3,"knowledgePointCount":6},
+  {"id":"zhongji-ch03","subjectId":"zhongji","title":"第三章 五行学说","description":"五行的基本概念、基本内容和在中医学中的应用","order":3,"sectionCount":3,"knowledgePointCount":6},
+  {"id":"zhongji-ch04","subjectId":"zhongji","title":"第四章 藏象","description":"五脏六腑、奇恒之腑的生理功能与相互关系","order":4,"sectionCount":6,"knowledgePointCount":20},
+  {"id":"zhongji-ch05","subjectId":"zhongji","title":"第五章 气血津液","description":"气、血、津液的概念、生成、运行和功能","order":5,"sectionCount":4,"knowledgePointCount":10},
+  {"id":"zhongji-ch06","subjectId":"zhongji","title":"第六章 经络","description":"经络的概念、组成、循行分布和生理功能","order":6,"sectionCount":3,"knowledgePointCount":8},
+  {"id":"zhongji-ch07","subjectId":"zhongji","title":"第七章 病因与发病","description":"六淫、七情、饮食劳逸、痰饮瘀血等因素与发病机制","order":7,"sectionCount":4,"knowledgePointCount":12},
+  {"id":"zhongji-ch08","subjectId":"zhongji","title":"第八章 病机","description":"邪正盛衰、阴阳失调、气血失调等基本病机","order":8,"sectionCount":3,"knowledgePointCount":8},
+  {"id":"zhongji-ch09","subjectId":"zhongji","title":"第九章 防治原则","description":"预防与治疗的基本原则","order":9,"sectionCount":2,"knowledgePointCount":6},
+  {"id":"zhongji-ch10","subjectId":"zhongji","title":"第十章 中医经典著作","description":"《内经》《伤寒论》《金匮要略》《温病学》主要内容","order":10,"sectionCount":4,"knowledgePointCount":12}
+]

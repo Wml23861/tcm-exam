@@ -1,0 +1,188 @@
+import type { RouteRecordRaw } from 'vue-router'
+
+export const AUTH_ROUTES = ['/login', '/register'] as const
+
+export const routes: RouteRecordRaw[] = [
+  // 认证页面（独立页面，无布局包裹）
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/auth/LoginPage.vue'),
+    meta: { title: '登录', public: true },
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/auth/RegisterPage.vue'),
+    meta: { title: '注册', public: true },
+  },
+  // 主应用布局
+  {
+    path: '/',
+    component: () => import('@/components/layout/AppLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'dashboard',
+        component: () => import('@/views/dashboard/DashboardPage.vue'),
+        meta: { title: '学习仪表盘' },
+      },
+      {
+        path: 'subjects',
+        name: 'subjects',
+        component: () => import('@/views/subjects/SubjectListPage.vue'),
+        meta: { title: '科目列表' },
+      },
+      {
+        path: 'subjects/:subjectId',
+        name: 'subject-detail',
+        component: () => import('@/views/subjects/SubjectDetailPage.vue'),
+        props: true,
+        meta: { title: '科目详情' },
+      },
+      {
+        path: 'subjects/:subjectId/chapters/:chapterId',
+        name: 'chapter-content',
+        component: () => import('@/views/subjects/ChapterContentPage.vue'),
+        props: true,
+        meta: { title: '章节学习' },
+      },
+      {
+        path: 'study',
+        name: 'study-mode',
+        component: () => import('@/views/study/StudyPage.vue'),
+        meta: { title: '学习模式' },
+      },
+      {
+        path: 'flashcards',
+        name: 'flashcards',
+        component: () => import('@/views/flashcard/FlashcardListPage.vue'),
+        meta: { title: '闪卡记忆' },
+      },
+      {
+        path: 'flashcards/review/:subjectId?',
+        name: 'flashcard-review',
+        component: () => import('@/views/flashcard/FlashcardReviewPage.vue'),
+        props: true,
+        meta: { title: '闪卡复习' },
+      },
+      {
+        path: 'practice',
+        name: 'practice-setup',
+        component: () => import('@/views/practice/PracticeSetupPage.vue'),
+        meta: { title: '题库刷题' },
+      },
+      {
+        path: 'practice/session',
+        name: 'practice-session',
+        component: () => import('@/views/practice/PracticeSessionPage.vue'),
+        meta: { title: '刷题中' },
+      },
+      {
+        path: 'practice/wrong',
+        name: 'wrong-questions',
+        component: () => import('@/views/practice/WrongQuestionPage.vue'),
+        meta: { title: '错题本' },
+      },
+      {
+        path: 'analysis/wrong',
+        name: 'wrong-analysis',
+        component: () => import('@/views/practice/WrongAnalysisPage.vue'),
+        meta: { title: '错题分析' },
+      },
+      {
+        path: 'exam/setup',
+        name: 'exam-setup',
+        component: () => import('@/views/exam/MockExamSetupPage.vue'),
+        meta: { title: '模拟考试' },
+      },
+      {
+        path: 'exam/:examId',
+        name: 'exam-session',
+        component: () => import('@/views/exam/MockExamPage.vue'),
+        props: true,
+        meta: { title: '考试中' },
+      },
+      {
+        path: 'exam/:examId/result',
+        name: 'exam-result',
+        component: () => import('@/views/exam/ExamResultPage.vue'),
+        props: true,
+        meta: { title: '考试成绩' },
+      },
+      {
+        path: 'recite',
+        name: 'recite-home',
+        component: () => import('@/views/recite/ReciteHomePage.vue'),
+        meta: { title: '背诵辅助' },
+      },
+      {
+        path: 'recite/songs',
+        name: 'formula-songs',
+        component: () => import('@/views/recite/FormulaSongsPage.vue'),
+        meta: { title: '方歌背诵' },
+      },
+      {
+        path: 'recite/herbs',
+        name: 'herb-properties',
+        component: () => import('@/views/recite/HerbPropertiesPage.vue'),
+        meta: { title: '药性背诵' },
+      },
+      {
+        path: 'recite/acupoints',
+        name: 'acupoints',
+        component: () => import('@/views/recite/AcupointsPage.vue'),
+        meta: { title: '穴位背诵' },
+      },
+      {
+        path: 'videos',
+        name: 'videos',
+        component: () => import('@/views/video/VideoListPage.vue'),
+        meta: { title: '视频学习' },
+      },
+      {
+        path: 'videos/upload',
+        name: 'video-upload',
+        component: () => import('@/views/video/VideoUploadPage.vue'),
+        meta: { title: '上传视频' },
+      },
+      {
+        path: 'videos/:videoId',
+        name: 'video-player',
+        component: () => import('@/views/video/VideoPlayerPage.vue'),
+        props: true,
+        meta: { title: '视频播放' },
+      },
+      {
+        path: 'stats',
+        name: 'stats',
+        component: () => import('@/views/stats/StatsPage.vue'),
+        meta: { title: '学习统计' },
+      },
+      {
+        path: 'hotpoints',
+        name: 'hotpoints',
+        component: () => import('@/views/stats/HotPointsPage.vue'),
+        meta: { title: '考点预测' },
+      },
+      {
+        path: 'settings',
+        name: 'settings',
+        component: () => import('@/views/settings/SettingsPage.vue'),
+        meta: { title: '设置' },
+      },
+      {
+        path: 'bookmarks',
+        name: 'bookmarks',
+        component: () => import('@/views/study/BookmarkPage.vue'),
+        meta: { title: '我的收藏' },
+      },
+    ],
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: () => import('@/views/NotFoundPage.vue'),
+    meta: { title: '页面不存在' },
+  },
+]

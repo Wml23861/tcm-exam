@@ -1,0 +1,41 @@
+import { createApp } from './app.js'
+import { config } from './config/env.js'
+import { getDb } from './config/database.js'
+import { authService } from './services/auth.service.js'
+import path from 'node:path'
+import fs from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+function ensureDataDir() {
+  const dbPath = path.resolve(__dirname, '..', config.DB_PATH)
+  const dir = path.dirname(dbPath)
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true })
+  }
+}
+
+async function main() {
+  ensureDataDir()
+
+  // 运行数据库迁移
+  const db = getDb()
+  await db.migrate.latest()
+  console.log('[DB] 数据库迁移完成')
+
+  // 确保默认管理员用户存在
+  await authService.ensureDefaultUser()
+
+  const app = createApp()
+  app.listen(config.PORT, () => {
+    console.log(`\n  TCM Exam Prep API 已启动`)
+    console.log(`  地址: http://localhost:${config.PORT}`)
+    console.log(`  默认账号: admin / tcm2024\n`)
+  })
+}
+
+main().catch((err) => {
+  console.error('启动失败:', err)
+  process.exit(1)
+})
