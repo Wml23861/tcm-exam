@@ -124,47 +124,53 @@
       <!-- 外观设置 -->
       <TcmCard title="外观设置" class="settings-section">
         <div class="form-grid">
+          <!-- 季节主题 -->
           <div class="form-item">
-            <label class="form-label">主题模式</label>
-            <p class="form-hint">选择适合你的视觉主题</p>
-            <div class="option-row">
+            <label class="form-label">四季主题</label>
+            <p class="form-hint">选择适合当下的视觉风格 — 四君子配色</p>
+            <div class="season-grid">
               <button
-                :class="['option-btn', { 'is-active': form.theme === 'light' }]"
-                @click="form.theme = 'light'"
+                v-for="s in seasons"
+                :key="s.key"
+                :class="['season-btn', { 'is-active': form.season === s.key }]"
+                :style="{ '--season-color': s.color }"
+                @click="form.season = s.key"
               >
-                明亮
-              </button>
-              <button
-                :class="['option-btn', { 'is-active': form.theme === 'sepia' }]"
-                @click="form.theme = 'sepia'"
-              >
-                护眼纸质
+                <span class="season-icon">{{ s.icon }}</span>
+                <span class="season-name">{{ s.label }}</span>
+                <span class="season-desc">{{ s.desc }}</span>
               </button>
             </div>
           </div>
 
+          <!-- 明暗模式 -->
+          <div class="form-item">
+            <label class="form-label">明暗模式</label>
+            <p class="form-hint">选择明亮、暗色或跟随系统</p>
+            <div class="option-row">
+              <button
+                :class="['option-btn', { 'is-active': form.themeMode === 'light' }]"
+                @click="form.themeMode = 'light'"
+              >☀️ 明亮</button>
+              <button
+                :class="['option-btn', { 'is-active': form.themeMode === 'dark' }]"
+                @click="form.themeMode = 'dark'"
+              >🌙 暗色</button>
+              <button
+                :class="['option-btn', { 'is-active': form.themeMode === 'system' }]"
+                @click="form.themeMode = 'system'"
+              >💻 跟随系统</button>
+            </div>
+          </div>
+
+          <!-- 字体大小 -->
           <div class="form-item">
             <label class="form-label">字体大小</label>
             <p class="form-hint">调整界面文字大小</p>
             <div class="option-row">
-              <button
-                :class="['option-btn', { 'is-active': form.fontSize === 'small' }]"
-                @click="form.fontSize = 'small'"
-              >
-                小
-              </button>
-              <button
-                :class="['option-btn', { 'is-active': form.fontSize === 'medium' }]"
-                @click="form.fontSize = 'medium'"
-              >
-                中
-              </button>
-              <button
-                :class="['option-btn', { 'is-active': form.fontSize === 'large' }]"
-                @click="form.fontSize = 'large'"
-              >
-                大
-              </button>
+              <button :class="['option-btn', { 'is-active': form.fontSize === 'small' }]" @click="form.fontSize = 'small'">小</button>
+              <button :class="['option-btn', { 'is-active': form.fontSize === 'medium' }]" @click="form.fontSize = 'medium'">中</button>
+              <button :class="['option-btn', { 'is-active': form.fontSize === 'large' }]" @click="form.fontSize = 'large'">大</button>
             </div>
           </div>
         </div>
@@ -190,11 +196,18 @@ import TcmButton from '@/components/ui/TcmButton.vue'
 import TcmSkeleton from '@/components/ui/TcmSkeleton.vue'
 import { useSettingsStore } from '@/stores/useSettingsStore'
 import { daysUntilExam } from '@/utils/date'
-import type { AppSettings, ThemeMode, FontSize } from '@/types'
+import type { AppSettings, ThemeMode, FontSize, Season } from '@/types'
 
 const settingsStore = useSettingsStore()
 const isLoaded = ref(false)
 const saving = ref(false)
+
+const seasons = [
+  { key: 'spring' as Season, label: '春 · 兰', desc: '青绿生机', icon: '🌿', color: '#4A8C6F' },
+  { key: 'summer' as Season, label: '夏 · 竹', desc: '赤红热烈', icon: '🎋', color: '#C0392B' },
+  { key: 'autumn' as Season, label: '秋 · 菊', desc: '金黄沉稳', icon: '🍂', color: '#B8860B' },
+  { key: 'winter' as Season, label: '冬 · 梅', desc: '墨蓝沉静', icon: '❄️', color: '#3D5A80' },
+]
 
 const form = reactive({
   dailyStudyGoal: 20,
@@ -202,7 +215,8 @@ const form = reactive({
   dailyReviewGoal: 30,
   defaultExamDuration: 60,
   defaultExamQuestionCount: 100,
-  theme: 'light' as ThemeMode,
+  season: 'summer' as Season,
+  themeMode: 'light' as ThemeMode,
   fontSize: 'medium' as FontSize,
   dailyNewCards: 20,
   dailyReviewCards: 100,
@@ -222,7 +236,8 @@ function loadFormFromSettings(settings: AppSettings): void {
   form.dailyReviewGoal = settings.dailyReviewGoal
   form.defaultExamDuration = settings.defaultExamDuration
   form.defaultExamQuestionCount = settings.defaultExamQuestionCount
-  form.theme = settings.theme
+  form.season = settings.season || 'summer'
+  form.themeMode = settings.themeMode
   form.fontSize = settings.fontSize
   form.dailyNewCards = settings.dailyNewCards
   form.dailyReviewCards = settings.dailyReviewCards
@@ -244,7 +259,8 @@ async function handleSave(): Promise<void> {
       dailyReviewGoal: form.dailyReviewGoal,
       defaultExamDuration: form.defaultExamDuration,
       defaultExamQuestionCount: form.defaultExamQuestionCount,
-      theme: form.theme,
+      season: form.season,
+      themeMode: form.themeMode,
       fontSize: form.fontSize,
       dailyNewCards: form.dailyNewCards,
       dailyReviewCards: form.dailyReviewCards,
@@ -272,7 +288,7 @@ onMounted(async () => {
 
 <style scoped>
 .page-settings {
-  max-width: 700px;
+  max-width: var(--tcm-content-max-width);
   margin: 0 auto;
 }
 
@@ -409,6 +425,41 @@ onMounted(async () => {
   background: var(--tcm-primary-50);
   color: var(--tcm-primary-700);
   font-weight: 600;
+}
+
+/* ===== 季节选择器 ===== */
+.season-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.season-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 10px;
+  border: 2px solid var(--tcm-border-light);
+  border-radius: var(--tcm-radius-lg);
+  background: var(--tcm-bg-base);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.season-btn:hover {
+  border-color: var(--season-color, var(--tcm-primary-300));
+  transform: translateY(-1px);
+}
+.season-btn.is-active {
+  border-color: var(--season-color, var(--tcm-primary-500));
+  background: color-mix(in srgb, var(--season-color, var(--tcm-primary-500)) 8%, var(--tcm-bg-base));
+}
+.season-icon { font-size: 24px; line-height: 1; }
+.season-name { font-size: 14px; font-weight: 700; color: var(--tcm-text-primary); }
+.season-desc { font-size: 11px; color: var(--tcm-text-secondary); }
+
+@media (max-width: 480px) {
+  .season-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ===== 操作按钮 ===== */

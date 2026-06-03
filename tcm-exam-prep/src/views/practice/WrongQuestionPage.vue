@@ -401,7 +401,7 @@ function goToSetup(): void {
 
 <style scoped>
 .page-wrong {
-  max-width: 900px;
+  max-width: var(--tcm-content-max-width);
 }
 .page-header {
   display: flex;
@@ -563,8 +563,8 @@ function goToSetup(): void {
   font-size: var(--tcm-font-sm);
   color: var(--tcm-text-secondary);
   padding: 8px 12px;
-  background: #FFF8E1;
-  border: 1px solid #FFE082;
+  background: var(--tcm-gold-bg);
+  border: 1px solid var(--tcm-gold-border);
   border-radius: var(--tcm-radius-sm);
 }
 .last-wrong-answer {

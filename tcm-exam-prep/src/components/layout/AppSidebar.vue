@@ -177,7 +177,7 @@ function onNavClick() {
 }
 
 .sidebar-nav-item.router-link-active {
-  background: #FDF0ED;
+  background: var(--tcm-primary-50);
   color: var(--tcm-primary-500);
   font-weight: 600;
 }

@@ -458,7 +458,7 @@ onUnmounted(() => {
 
 <style scoped>
 .page-exam {
-  max-width: 1100px;
+  max-width: var(--tcm-content-max-width);
   margin: 0 auto;
   min-height: calc(100vh - 120px);
 }
@@ -478,8 +478,8 @@ onUnmounted(() => {
 }
 
 .exam-header.time-warning {
-  background: #FDF0ED;
-  border-color: var(--tcm-error);
+  background: var(--tcm-error-bg);
+  border-color: var(--tcm-error-text);
 }
 
 .exam-title {
@@ -828,9 +828,9 @@ onUnmounted(() => {
 }
 
 .nav-btn--answered {
-  background: var(--tcm-jade-300);
-  border-color: var(--tcm-jade-500);
-  color: #fff;
+  background: var(--tcm-success-border);
+  border-color: var(--tcm-success-text);
+  color: var(--tcm-text-on-primary);
 }
 
 .nav-btn--marked {

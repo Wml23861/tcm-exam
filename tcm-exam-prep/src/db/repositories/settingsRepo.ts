@@ -7,7 +7,7 @@ const defaultSettings: AppSettings = {
   dailyReviewGoal: 30,
   defaultExamDuration: 60,
   defaultExamQuestionCount: 100,
-  theme: 'light',
+  season: "spring", themeMode: "light",
   fontSize: 'medium',
   dailyNewCards: 20,
   dailyReviewCards: 100,

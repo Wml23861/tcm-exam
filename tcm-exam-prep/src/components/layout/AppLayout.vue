@@ -16,7 +16,7 @@
         </div>
       </main>
     </div>
-    <AppMobileNav v-if="isMobile" />
+    <AppMobileCapsuleNav v-if="isMobile" />
     <SearchPanel ref="searchPanelRef" />
     <PomodoroTimer />
   </div>
@@ -26,7 +26,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import AppHeader from './AppHeader.vue'
 import AppSidebar from './AppSidebar.vue'
-import AppMobileNav from './AppMobileNav.vue'
+import AppMobileCapsuleNav from './AppMobileCapsuleNav.vue'
 import SearchPanel from '@/components/common/SearchPanel.vue'
 import PomodoroTimer from '@/components/common/PomodoroTimer.vue'
 
@@ -44,6 +44,8 @@ function updateBreakpoint() {
   } else {
     sidebarCollapsed.value = false
   }
+  // 设置 CSS 变量用于全屏检测
+  document.documentElement.style.setProperty('--tcm-window-width', String(w))
 }
 
 function toggleSidebar() {
@@ -84,7 +86,7 @@ onUnmounted(() => {
 }
 
 .app-layout--mobile .app-layout-body {
-  padding-bottom: 56px;
+  /* 去掉底部 padding，因为已经用顶部胶囊导航代替 */
 }
 
 .app-layout-main {
@@ -94,19 +96,13 @@ onUnmounted(() => {
 }
 
 .app-layout--mobile .app-layout-main {
-  min-height: calc(100vh - 112px);
+  min-height: calc(100vh - 56px);
 }
 
 .app-layout-content {
-  max-width: 1200px;
+  max-width: var(--tcm-content-max-width);
   margin: 0 auto;
-  padding: 24px;
+  padding: var(--tcm-content-padding-y) var(--tcm-content-padding-x);
   width: 100%;
-}
-
-@media (max-width: 768px) {
-  .app-layout-content {
-    padding: 12px;
-  }
 }
 </style>

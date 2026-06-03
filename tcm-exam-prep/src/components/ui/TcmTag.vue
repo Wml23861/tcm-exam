@@ -38,11 +38,11 @@ const tagClasses = computed(() => [
 .tcm-tag--md { padding: 2px 12px; font-size: var(--tcm-font-sm); }
 
 .tcm-tag--default { background: var(--tcm-bg-surface); color: var(--tcm-text-secondary); border: 1px solid var(--tcm-border); }
-.tcm-tag--key { background: #FDF0ED; color: #C0392B; border: 1px solid #F5C1B6; }
-.tcm-tag--difficult { background: #FFF3E0; color: #E65100; border: 1px solid #FFCC80; }
-.tcm-tag--high-frequency { background: #FFF8E1; color: #B8860B; border: 1px solid #FFE082; }
-.tcm-tag--predicted { background: #E8F5E9; color: #2E5E4E; border: 1px solid #A5D6A7; }
-.tcm-tag--memorize { background: #EDE7F6; color: #4527A0; border: 1px solid #B39DDB; }
-.tcm-tag--success { background: #E8F5E9; color: #2E5E4E; }
-.tcm-tag--warning { background: #FFF3E0; color: #E65100; }
+.tcm-tag--key { background: var(--tcm-primary-50); color: var(--tcm-primary-500); border: 1px solid var(--tcm-primary-100); }
+.tcm-tag--difficult { background: var(--tcm-warning-bg); color: var(--tcm-warning-text); border: 1px solid var(--tcm-warning-border); }
+.tcm-tag--high-frequency { background: var(--tcm-gold-bg); color: var(--tcm-gold-text); border: 1px solid var(--tcm-gold-border); }
+.tcm-tag--predicted { background: var(--tcm-success-bg); color: var(--tcm-success-text); border: 1px solid var(--tcm-success-border); }
+.tcm-tag--memorize { background: var(--tcm-purple-bg); color: var(--tcm-purple-text); border: 1px solid var(--tcm-purple-border); }
+.tcm-tag--success { background: var(--tcm-success-bg); color: var(--tcm-success-text); }
+.tcm-tag--warning { background: var(--tcm-warning-bg); color: var(--tcm-warning-text); }
 </style>

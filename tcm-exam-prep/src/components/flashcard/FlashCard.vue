@@ -100,15 +100,15 @@ function flip(): void { emit('flip') }
 }
 
 .flashcard-front {
-  background: linear-gradient(135deg, #fffefb 0%, #fef9f0 100%);
-  border: 2px solid #e8dcc8;
-  box-shadow: 0 4px 24px rgba(139, 69, 19, 0.06);
+  background: var(--tcm-bg-elevated);
+  border: 2px solid var(--tcm-border-light);
+  box-shadow: var(--tcm-shadow-md);
 }
 
 .flashcard-back {
-  background: linear-gradient(135deg, #f9faf6 0%, #f2f6eb 100%);
-  border: 2px solid #8fa87a;
-  box-shadow: 0 4px 24px rgba(94, 130, 70, 0.08);
+  background: var(--tcm-bg-elevated);
+  border: 2px solid var(--tcm-primary-300);
+  box-shadow: var(--tcm-shadow-lg);
   transform: rotateY(180deg);
 }
 
@@ -118,12 +118,12 @@ function flip(): void { emit('flip') }
   align-items: center;
   justify-content: space-between;
   padding: 16px 32px;
-  border-bottom: 1px solid #ece4d5;
+  border-bottom: 1px solid var(--tcm-border-light);
   flex-shrink: 0;
 }
 
 .card-header--back {
-  border-bottom-color: #d4e2c8;
+  border-bottom-color: var(--tcm-primary-100);
 }
 
 .flashcard-category {
@@ -133,8 +133,8 @@ function flip(): void { emit('flip') }
 .answer-badge {
   font-size: 13px;
   font-weight: 600;
-  color: #5e8246;
-  background: #eaf3e2;
+  color: var(--tcm-success-text);
+  background: var(--tcm-success-bg);
   padding: 3px 14px;
   border-radius: 100px;
   letter-spacing: 0.5px;
@@ -142,7 +142,7 @@ function flip(): void { emit('flip') }
 
 .card-hint {
   font-size: 12px;
-  color: #c5bdaa;
+  color: var(--tcm-text-disabled);
 }
 
 /* Body — flexible, pads generously */
@@ -156,7 +156,7 @@ function flip(): void { emit('flip') }
 
 .flashcard-question {
   font-size: 18px;
-  color: #3d3027;
+  color: var(--tcm-text-primary);
   line-height: 2;
   text-align: center;
   width: 100%;
@@ -164,7 +164,7 @@ function flip(): void { emit('flip') }
 
 .flashcard-answer {
   font-size: 16px;
-  color: #333;
+  color: var(--tcm-text-primary);
   line-height: 2;
   text-align: left;
   width: 100%;
@@ -175,7 +175,7 @@ function flip(): void { emit('flip') }
 .flashcard-answer :deep(h3) {
   font-size: 17px;
   margin: 16px 0 8px;
-  color: #4a6741;
+  color: var(--tcm-primary-700);
 }
 
 .flashcard-answer :deep(ul),
@@ -189,7 +189,7 @@ function flip(): void { emit('flip') }
 }
 
 .flashcard-answer :deep(strong) {
-  color: #8b4513;
+  color: var(--tcm-primary-500);
 }
 
 .flashcard-answer :deep(table) {
@@ -200,50 +200,50 @@ function flip(): void { emit('flip') }
 }
 
 .flashcard-answer :deep(th) {
-  background: #eaf3e2;
-  color: #4a6741;
+  background: var(--tcm-success-bg);
+  color: var(--tcm-success-text);
   padding: 10px 14px;
   text-align: left;
-  border: 1px solid #d4e2c8;
+  border: 1px solid var(--tcm-success-border);
   font-weight: 600;
 }
 
 .flashcard-answer :deep(td) {
   padding: 8px 14px;
-  border: 1px solid #eaf0e2;
+  border: 1px solid var(--tcm-border-light);
 }
 
 .flashcard-answer :deep(blockquote) {
-  border-left: 3px solid #8fa87a;
-  background: #f5f9f1;
+  border-left: 3px solid var(--tcm-primary-300);
+  background: var(--tcm-bg-surface);
   margin: 14px 0;
   padding: 10px 20px;
-  color: #666;
+  color: var(--tcm-text-secondary);
   font-style: italic;
   border-radius: 0 6px 6px 0;
 }
 
 .flashcard-answer :deep(code) {
-  background: #f0ebe0;
+  background: var(--tcm-bg-code);
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.9em;
-  color: #8b4513;
+  color: var(--tcm-primary-500);
 }
 
 /* Mnemonic footer */
 .flashcard-mnemonic {
   margin: 0 32px 24px;
   padding: 14px 24px;
-  background: linear-gradient(135deg, #fffdf5 0%, #fff9e8 100%);
-  border: 1px solid #e8d5a3;
+  background: var(--tcm-gold-bg);
+  border: 1px solid var(--tcm-gold-border);
   border-radius: 12px;
 }
 
 .mnemonic-label {
   font-size: 12px;
   font-weight: 700;
-  color: #b8860b;
+  color: var(--tcm-gold-text);
   letter-spacing: 0.5px;
   margin-bottom: 6px;
   text-transform: uppercase;
@@ -251,7 +251,7 @@ function flip(): void { emit('flip') }
 
 .mnemonic-text {
   font-size: 14px;
-  color: #6b5a30;
+  color: var(--tcm-text-secondary);
   line-height: 1.8;
   margin: 0;
 }

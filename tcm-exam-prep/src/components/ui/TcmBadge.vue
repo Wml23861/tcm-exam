@@ -29,7 +29,7 @@ defineProps({
   font-family: var(--tcm-font-decorative);
   font-size: var(--tcm-font-lg);
   transform: rotate(-15deg);
-  box-shadow: 0 0 0 2px rgba(192, 57, 43, 0.15);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--tcm-seal-color) 15%, transparent);
 }
 
 .tcm-badge--dot {
@@ -45,7 +45,7 @@ defineProps({
   padding: 0 6px;
   border-radius: 10px;
   background: var(--tcm-primary-500);
-  color: #fff;
+  color: var(--tcm-text-on-primary);
   font-size: var(--tcm-font-xs);
   font-weight: 600;
 }

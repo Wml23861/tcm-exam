@@ -35,6 +35,9 @@ async function main() {
   const { seed: seed9 } = await import('./seeds/008_questions_continuation.ts')
   const { seed: seed10 } = await import('./seeds/009_yixue_content_seed.ts')
   const { seed: seed11 } = await import('./seeds/010_yixue_questions_seed.ts')
+  const { seed: seed12 } = await import('./seeds/013_massive_content_seed.ts')
+  const { seed: seed13 } = await import('./seeds/015_massive_questions_seed.ts')
+  const { seed: seed14 } = await import('./seeds/016_massive_flashcards_seed.ts')
 
   await seed1(db)
   await seed2(db)
@@ -48,6 +51,9 @@ async function main() {
   await seed9(db)
   await seed10(db)
   await seed11(db)
+  await seed12(db)
+  await seed13(db)
+  await seed14(db)
 
   // 验证
   const sub = await db('subjects').count('* as c').first() as { c: number }

@@ -36,12 +36,12 @@ defineEmits<{ go: [index: number] }>()
   align-items: center; justify-content: center;
 }
 .q-nav-btn--unanswered { background: var(--tcm-bg-base); color: var(--tcm-text-disabled); }
-.q-nav-btn--answered { background: #E8F5E9; color: var(--tcm-jade-500); border-color: #A5D6A7; }
-.q-nav-btn--marked { background: #FFF8E1; color: var(--tcm-gold-500); border-color: #FFE082; }
+.q-nav-btn--answered { background: var(--tcm-success-bg); color: var(--tcm-success-text); border-color: var(--tcm-success-border); }
+.q-nav-btn--marked { background: var(--tcm-gold-bg); color: var(--tcm-gold-text); border-color: var(--tcm-gold-border); }
 .q-nav-btn.active { border-color: var(--tcm-primary-500); border-width: 2px; font-weight: 700; }
 .q-nav-legend { display: flex; gap: 16px; font-size: var(--tcm-font-xs); color: var(--tcm-text-secondary); }
 .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; }
 .legend-dot--unanswered { background: var(--tcm-bg-base); border: 1px solid var(--tcm-border); }
-.legend-dot--answered { background: #A5D6A7; }
-.legend-dot--marked { background: #FFE082; }
+.legend-dot--answered { background: var(--tcm-success-border); }
+.legend-dot--marked { background: var(--tcm-gold-border); }
 </style>

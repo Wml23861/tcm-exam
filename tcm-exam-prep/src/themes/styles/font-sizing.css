@@ -1,0 +1,6 @@
+/* ===== 字号缩放 ===== */
+:root{--tcm-font-scale:1}
+:root[data-font-size="small"]{--tcm-font-scale:0.85}
+:root[data-font-size="medium"]{--tcm-font-scale:1}
+:root[data-font-size="large"]{--tcm-font-scale:1.2}
+:root{--tcm-font-xs:calc(12px * var(--tcm-font-scale));--tcm-font-sm:calc(13px * var(--tcm-font-scale));--tcm-font-base:calc(15px * var(--tcm-font-scale));--tcm-font-md:calc(16px * var(--tcm-font-scale));--tcm-font-lg:calc(18px * var(--tcm-font-scale));--tcm-font-xl:calc(20px * var(--tcm-font-scale));--tcm-font-2xl:calc(24px * var(--tcm-font-scale));--tcm-font-3xl:calc(30px * var(--tcm-font-scale))}

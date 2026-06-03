@@ -15,6 +15,7 @@ declare module 'vue' {
     AppBreadcrumb: typeof import('./components/layout/AppBreadcrumb.vue')['default']
     AppHeader: typeof import('./components/layout/AppHeader.vue')['default']
     AppLayout: typeof import('./components/layout/AppLayout.vue')['default']
+    AppMobileCapsuleNav: typeof import('./components/layout/AppMobileCapsuleNav.vue')['default']
     AppMobileNav: typeof import('./components/layout/AppMobileNav.vue')['default']
     AppSidebar: typeof import('./components/layout/AppSidebar.vue')['default']
     B1QuestionGroup: typeof import('./components/question/B1QuestionGroup.vue')['default']

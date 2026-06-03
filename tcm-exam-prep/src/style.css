@@ -1,8 +1,13 @@
 /**
  * 全局样式入口
+ * 加载顺序：变量 → 主题 → 字号 → 响应式 → 装饰 → 重置 → 过渡 → Tailwind
  */
 
 @import './assets/styles/variables.css';
+@import './themes/output/themes.css';
+@import './themes/styles/font-sizing.css';
+@import './themes/styles/responsive.css';
+@import './themes/styles/chinese-decorative.css';
 @import './assets/styles/base.css';
 @import './assets/styles/transitions.css';
 
@@ -10,21 +15,4 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Element Plus 主题覆盖 (国风定制) */
-:root {
-  --el-color-primary: #C0392B;
-  --el-color-primary-light-3: #D4655A;
-  --el-color-primary-light-5: #E4826E;
-  --el-color-primary-light-7: #F0A89A;
-  --el-color-primary-light-8: #F5C1B6;
-  --el-color-primary-light-9: #FADBD8;
-  --el-color-primary-dark-2: #8B2500;
-  --el-bg-color: #FDF8EE;
-  --el-bg-color-overlay: #FFF9F0;
-  --el-border-color: #D4C5B9;
-  --el-border-color-light: #E8DED0;
-  --el-text-color-primary: #2C1810;
-  --el-text-color-regular: #6B5B4F;
-  --el-font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --el-border-radius-base: 8px;
-}
+/* Element Plus 变量已在 themes.css 中按主题覆盖，此处无需重复 */

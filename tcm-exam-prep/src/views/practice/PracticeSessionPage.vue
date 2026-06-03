@@ -573,7 +573,7 @@ async function loadQuestions(): Promise<void> {
 
 <style scoped>
 .page-practice-session {
-  max-width: 1100px;
+  max-width: var(--tcm-content-max-width);
 }
 
 /* Loading */
@@ -686,7 +686,7 @@ async function loadQuestions(): Promise<void> {
   height: 10px;
   border-radius: 50%;
 }
-.stat-dot--correct { background: #A5D6A7; }
+.stat-dot--correct { background: var(--tcm-success-border); }
 .stat-dot--incorrect { background: var(--tcm-error); }
 .stat-dot--unanswered { background: var(--tcm-border); }
 

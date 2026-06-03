@@ -1,0 +1,13 @@
+/* 中医装饰样式 */
+.tcm-brush{font-family:var(--tcm-font-decorative);letter-spacing:0.15em;font-weight:400}
+@keyframes seal-appear{0%{transform:rotate(-15deg) scale(.3);opacity:0}60%{transform:rotate(-17deg) scale(1.1);opacity:.8}100%{transform:rotate(-15deg) scale(1);opacity:1}}
+.tcm-seal-animate{animation:seal-appear .5s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes ink-spread{0%{clip-path:circle(0% at 50% 50%);opacity:0}100%{clip-path:circle(75% at 50% 50%);opacity:1}}
+.tcm-ink-reveal{animation:ink-spread .6s ease-out forwards}
+.tcm-scroll{border-top:2px solid var(--tcm-scroll-border,var(--tcm-border-default));border-bottom:2px solid var(--tcm-scroll-border,var(--tcm-border-default));padding:var(--tcm-space-2xl,32px) 0;position:relative}
+.tcm-divider-cloud{height:12px;background:repeating-linear-gradient(45deg,var(--tcm-border-default) 0,var(--tcm-border-default) 1px,transparent 1px,transparent 5px);margin:var(--tcm-space-xl,24px) 0;opacity:.5}
+.tcm-bg-ink{position:relative}
+.tcm-quote-classical{border-left:4px solid var(--tcm-primary-500);background:var(--tcm-primary-50);padding:var(--tcm-space-md,12px) var(--tcm-space-lg,20px);margin:var(--tcm-space-lg,20px) 0;font-family:var(--tcm-font-decorative);font-size:var(--tcm-font-lg);font-style:italic;border-radius:0 var(--tcm-radius-md) var(--tcm-radius-md) 0}
+@keyframes hui-rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.tcm-hui-spinner{width:24px;height:24px;border:3px solid var(--tcm-border-default);border-top-color:var(--tcm-primary-500);border-radius:50%;animation:hui-rotate .8s linear infinite}
+html.theme-transitioning,html.theme-transitioning *,html.theme-transitioning ::before,html.theme-transitioning ::after{transition:background-color .25s ease,color .25s ease,border-color .25s ease,box-shadow .25s ease !important}

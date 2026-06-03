@@ -261,7 +261,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.page-chapter { max-width: 1000px; }
+.page-chapter { max-width: var(--tcm-content-max-width); }
 
 .chapter-header { margin-bottom: 24px; }
 .back-link { color: var(--tcm-text-secondary); font-size: var(--tcm-font-sm); text-decoration: none; display: inline-block; margin-bottom: 12px; }
@@ -304,9 +304,9 @@ onUnmounted(() => {
   transition: all 0.15s;
 }
 .section-nav-item:hover { background: var(--tcm-bg-elevated); }
-.section-nav-item.active { background: #FDF0ED; color: var(--tcm-primary-500); }
+.section-nav-item.active { background: var(--tcm-primary-50); color: var(--tcm-primary-500); }
 .section-nav-num { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; background: var(--tcm-bg-base); border-radius: 50%; font-size: var(--tcm-font-xs); flex-shrink: 0; }
-.section-nav-item.active .section-nav-num { background: var(--tcm-primary-500); color: #fff; }
+.section-nav-item.active .section-nav-num { background: var(--tcm-primary-500); color: var(--tcm-text-on-primary); }
 
 .chapter-content { flex: 1; min-width: 0; }
 
@@ -391,7 +391,7 @@ onUnmounted(() => {
   height: 44px;
   border-radius: 50%;
   background: var(--tcm-primary-500);
-  color: #fff;
+  color: var(--tcm-text-on-primary);
   border: none;
   font-size: 20px;
   cursor: pointer;

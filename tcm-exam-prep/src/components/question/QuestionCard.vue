@@ -85,10 +85,10 @@ function selectOption(key: string) {
   border-radius: var(--tcm-radius-md); cursor: pointer;
   transition: all 0.15s; background: var(--tcm-bg-surface);
 }
-.question-option:hover { border-color: var(--tcm-primary-300); background: #FDF0ED; }
-.option-selected { border-color: var(--tcm-primary-500); background: #FDF0ED; }
-.option-correct { border-color: var(--tcm-jade-500); background: #E8F5E9; }
-.option-incorrect { border-color: var(--tcm-error); background: #FFEBEE; }
+.question-option:hover { border-color: var(--tcm-primary-300); background: var(--tcm-primary-50); }
+.option-selected { border-color: var(--tcm-primary-500); background: var(--tcm-primary-50); }
+.option-correct { border-color: var(--tcm-success-text); background: var(--tcm-success-bg); }
+.option-incorrect { border-color: var(--tcm-error-text); background: var(--tcm-error-bg); }
 .option-dimmed { opacity: 0.5; }
 .option-key { font-weight: 700; font-size: var(--tcm-font-md); color: var(--tcm-primary-500); min-width: 24px; }
 .option-correct .option-key { color: var(--tcm-jade-500); }
