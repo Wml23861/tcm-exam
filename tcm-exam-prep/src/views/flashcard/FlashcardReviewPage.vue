@@ -1,5 +1,5 @@
 <template>
-  <div class="page-flashcard-review">
+  <div class="page-flashcard-review" @keydown.left="store.prevCard()" @keydown.right="store.nextCard()">
     <!-- Header -->
     <div class="review-header">
       <button class="review-back" @click="goBack">
@@ -53,9 +53,38 @@
         />
       </div>
 
+      <!-- Navigation Bar -->
+      <div class="card-navigator">
+        <button
+          class="nav-btn nav-prev"
+          :disabled="store.currentIndex === 0"
+          title="上一张（← 键）"
+          @click="store.prevCard()"
+        >
+          &lsaquo; 上一张
+        </button>
+
+        <span class="nav-info">
+          {{ store.deckProgress.current }} / {{ store.deckProgress.total }}
+        </span>
+
+        <button
+          class="nav-btn nav-next"
+          :disabled="store.currentIndex >= store.deckProgress.total - 1"
+          title="下一张（→ 键）"
+          @click="store.nextCard()"
+        >
+          下一张 &rsaquo;
+        </button>
+      </div>
+
       <!-- Flashcard -->
       <div class="review-card-wrapper">
-        <FlashCard :card="store.currentCard" />
+        <FlashCard
+          :card="store.currentCard"
+          :flipped="store.isFlipped"
+          @flip="store.flipCard()"
+        />
       </div>
 
       <!-- Rating Buttons -->
@@ -65,12 +94,23 @@
       <div v-else class="flip-prompt">
         <p>翻转卡片查看答案后进行评分</p>
       </div>
+
+      <!-- Dot Navigation — jump to any card -->
+      <div class="dot-navigation">
+        <button
+          v-for="(_card, idx) in store.currentDeck"
+          :key="idx"
+          :class="['dot', { active: idx === store.currentIndex }]"
+          :title="`第 ${idx + 1} 张`"
+          @click="store.goToCard(idx)"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted } from 'vue'
+import { watch, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { useFlashcardStore } from '@/stores/useFlashcardStore'
@@ -100,8 +140,26 @@ function goBack(): void {
   router.push({ name: 'flashcards' })
 }
 
+function handleKeydown(e: KeyboardEvent): void {
+  if (e.key === 'ArrowLeft') {
+    e.preventDefault()
+    store.prevCard()
+  } else if (e.key === 'ArrowRight') {
+    e.preventDefault()
+    store.nextCard()
+  } else if (e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault()
+    store.flipCard()
+  }
+}
+
 onMounted(async () => {
   await store.startReview(subjectId)
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
 })
 
 // When navigating to a different subject, restart the review
@@ -115,7 +173,7 @@ watch(
 
 <style scoped>
 .page-flashcard-review {
-  max-width: 600px;
+  max-width: 800px;
 }
 
 .review-header {
@@ -219,14 +277,87 @@ watch(
   margin-bottom: 24px;
 }
 
+/* Nav Buttons */
+.card-navigator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.nav-btn {
+  padding: 8px 20px;
+  border: 1.5px solid #e0d6c2;
+  border-radius: 10px;
+  background: #fffdf7;
+  color: #5c4a32;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background: #faf4e6;
+  border-color: #c9a96e;
+  color: #8b4513;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.06);
+}
+
+.nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nav-info {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5c4a32;
+  letter-spacing: 0.5px;
+}
+
 .review-card-wrapper {
   margin-bottom: 8px;
 }
 
 .flip-prompt {
   text-align: center;
-  margin-top: 24px;
-  font-size: var(--tcm-font-sm);
-  color: var(--tcm-text-disabled);
+  margin-top: 36px;
+  font-size: 14px;
+  color: #bbb;
+}
+
+/* Dot Navigation */
+.dot-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 40px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  padding: 0 16px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: #e0d6c2;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.dot:hover {
+  background: #c9a96e;
+  transform: scale(1.2);
+}
+
+.dot.active {
+  background: #8b4513;
+  transform: scale(1.35);
+  box-shadow: 0 1px 4px rgba(139, 69, 19, 0.3);
 }
 </style>

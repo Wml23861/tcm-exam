@@ -101,8 +101,24 @@ export const useFlashcardStore = defineStore('flashcard', () => {
   }
 
   function nextCard(): void {
-    isFlipped.value = false
-    currentIndex.value++
+    if (currentIndex.value < currentDeck.value.length - 1) {
+      isFlipped.value = false
+      currentIndex.value++
+    }
+  }
+
+  function prevCard(): void {
+    if (currentIndex.value > 0) {
+      isFlipped.value = false
+      currentIndex.value--
+    }
+  }
+
+  function goToCard(index: number): void {
+    if (index >= 0 && index < currentDeck.value.length) {
+      isFlipped.value = false
+      currentIndex.value = index
+    }
   }
 
   async function loadTodayStats(): Promise<void> {
@@ -126,6 +142,8 @@ export const useFlashcardStore = defineStore('flashcard', () => {
     rateCard,
     flipCard,
     nextCard,
+    prevCard,
+    goToCard,
     loadTodayStats,
   }
 })

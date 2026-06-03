@@ -1,44 +1,56 @@
 <template>
   <div class="fc-progress">
-    <span class="fc-progress-text">{{ current }} / {{ total }}</span>
+    <span class="fc-progress-label">进度</span>
     <div class="fc-progress-bar">
-      <div class="fc-progress-fill" :style="{ width: `${(current / Math.max(1, total)) * 100}%` }"></div>
+      <div class="fc-progress-fill" :style="{ width: `${percent}%` }"></div>
     </div>
+    <span class="fc-progress-text">{{ current }}<span class="fc-progress-total"> / {{ total }}</span></span>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
-  current: number
-  total: number
-}>()
+import { computed } from 'vue'
+
+const props = defineProps<{ current: number; total: number }>()
+const percent = computed(() => (props.current / Math.max(1, props.total)) * 100)
 </script>
 
 <style scoped>
 .fc-progress {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
-.fc-progress-text {
-  font-size: var(--tcm-font-sm);
-  color: var(--tcm-text-secondary);
-  min-width: 50px;
+.fc-progress-label {
+  font-size: 13px;
+  color: #aaa;
+  min-width: 28px;
 }
 
 .fc-progress-bar {
   flex: 1;
-  height: 6px;
-  background: var(--tcm-bg-surface);
-  border-radius: 3px;
+  height: 8px;
+  background: #f0ebe0;
+  border-radius: 4px;
   overflow: hidden;
 }
 
 .fc-progress-fill {
   height: 100%;
-  background: var(--tcm-primary-500);
-  border-radius: 3px;
-  transition: width 0.3s;
+  background: linear-gradient(90deg, #c9a96e, #b8860b);
+  border-radius: 4px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fc-progress-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d3027;
+}
+
+.fc-progress-total {
+  font-weight: 400;
+  color: #bbb;
 }
 </style>

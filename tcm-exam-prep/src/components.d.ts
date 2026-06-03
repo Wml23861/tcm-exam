@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AcupointIllustration: typeof import('./components/recite/AcupointIllustration.vue')['default']
     AppBreadcrumb: typeof import('./components/layout/AppBreadcrumb.vue')['default']
     AppHeader: typeof import('./components/layout/AppHeader.vue')['default']
     AppLayout: typeof import('./components/layout/AppLayout.vue')['default']
