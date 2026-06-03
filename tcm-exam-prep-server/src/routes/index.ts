@@ -10,6 +10,7 @@ import { wrongQuestionRoutes } from './wrong-question.routes.js'
 import { noteRoutes } from './note.routes.js'
 import { videoRoutes } from './video.routes.js'
 import { settingsRoutes } from './settings.routes.js'
+import { aiRoutes } from './ai.routes.js'
 
 const router = Router()
 
@@ -29,5 +30,6 @@ router.use('/', wrongQuestionRoutes) // /api/wrong-questions
 router.use('/', noteRoutes)        // /api/notes
 router.use('/', videoRoutes)       // /api/videos
 router.use('/', settingsRoutes)    // /api/settings
+router.use('/ai', aiRoutes)        // /api/ai/chat
 
 export { router as routes }

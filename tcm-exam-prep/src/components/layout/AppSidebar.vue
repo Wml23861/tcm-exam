@@ -70,6 +70,7 @@ const sidebarClasses = computed(() => [
 const navItems = [
   { path: '/', label: '学习仪表盘', icon: '&#x2606;', badge: null as number | null },
   { path: '/subjects', label: '科目学习', icon: '&#x1F4D6;', badge: null },
+  { path: '/ai-teacher', label: 'AI中医老师', icon: '&#x1F9D1;&#x200D;&#x1F3EB;', badge: null },
   { path: '/flashcards', label: '闪卡记忆', icon: '&#x1F0CF;', badge: null },
   { path: '/practice', label: '题库刷题', icon: '&#x270E;', badge: null },
   { path: '/exam/setup', label: '模拟考试', icon: '&#x1F3AF;', badge: null },

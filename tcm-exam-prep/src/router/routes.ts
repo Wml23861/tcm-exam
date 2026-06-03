@@ -166,6 +166,12 @@ export const routes: RouteRecordRaw[] = [
         meta: { title: '考点预测' },
       },
       {
+        path: 'ai-teacher',
+        name: 'ai-teacher',
+        component: () => import('@/views/ai/AiTeacherPage.vue'),
+        meta: { title: 'AI中医老师' },
+      },
+      {
         path: 'settings',
         name: 'settings',
         component: () => import('@/views/settings/SettingsPage.vue'),

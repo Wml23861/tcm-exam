@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed } from 'vue'
 import MarkdownIt from 'markdown-it'
 import TcmTag from '@/components/ui/TcmTag.vue'
 import type { Flashcard } from '@/types'
@@ -68,13 +68,6 @@ const tagType = computed(() => {
 })
 
 function flip(): void { emit('flip') }
-
-function handleKeydown(e: KeyboardEvent): void {
-  if (e.code === 'Space') { e.preventDefault(); emit('flip') }
-}
-
-onMounted(() => window.addEventListener('keydown', handleKeydown))
-onUnmounted(() => window.removeEventListener('keydown', handleKeydown))
 </script>
 
 <style scoped>

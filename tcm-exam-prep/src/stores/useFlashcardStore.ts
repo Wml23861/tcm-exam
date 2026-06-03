@@ -101,7 +101,7 @@ export const useFlashcardStore = defineStore('flashcard', () => {
   }
 
   function nextCard(): void {
-    if (currentIndex.value < currentDeck.value.length - 1) {
+    if (currentIndex.value < currentDeck.value.length) {
       isFlipped.value = false
       currentIndex.value++
     }

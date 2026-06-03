@@ -1,5 +1,5 @@
 <template>
-  <div class="page-flashcard-review" @keydown.left="store.prevCard()" @keydown.right="store.nextCard()">
+  <div class="page-flashcard-review">
     <!-- Header -->
     <div class="review-header">
       <button class="review-back" @click="goBack">
