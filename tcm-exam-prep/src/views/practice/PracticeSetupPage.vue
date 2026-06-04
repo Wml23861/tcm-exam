@@ -222,7 +222,7 @@ function goToWrongQuestions(): void {
 
 <style scoped>
 .page-practice-setup {
-  max-width: 800px;
+  /* 宽度动态填充 */
 }
 .page-title {
   font-family: var(--tcm-font-decorative);

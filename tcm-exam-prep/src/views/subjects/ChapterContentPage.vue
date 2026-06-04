@@ -263,7 +263,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.page-chapter { max-width: 1200px; height: calc(100vh - 88px); }
+.page-chapter { height: calc(100vh - 88px); }
 .page-chapter-inner { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
 
 .chapter-header { flex-shrink: 0; margin-bottom: 16px; }
@@ -382,6 +382,7 @@ onUnmounted(() => {
   min-width: 0;
   overflow-y: auto;
   padding-right: 8px;
+  position: relative;
 }
 
 .chapter-content::-webkit-scrollbar { width: 5px; }

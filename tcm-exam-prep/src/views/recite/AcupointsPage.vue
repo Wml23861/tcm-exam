@@ -1153,8 +1153,7 @@ function toggleReveal(index: number): void {
 
 <style scoped>
 .page-acupoints {
-  max-width: 900px;
-  margin: 0 auto;
+  /* 宽度动态填充 */
 }
 
 .page-header {
