@@ -111,6 +111,26 @@ export const routes: RouteRecordRaw[] = [
         meta: { title: '考试成绩' },
       },
       {
+        path: 'past-exams',
+        name: 'past-exams',
+        component: () => import('@/views/exam/PastExamListPage.vue'),
+        meta: { title: '历年真题' },
+      },
+      {
+        path: 'past-exams/:examId',
+        name: 'past-exam',
+        component: () => import('@/views/exam/PastExamPage.vue'),
+        props: true,
+        meta: { title: '真题考试' },
+      },
+      {
+        path: 'past-exams/:examId/analysis',
+        name: 'past-exam-analysis',
+        component: () => import('@/views/exam/PastExamAnalysisPage.vue'),
+        props: true,
+        meta: { title: '真题分析' },
+      },
+      {
         path: 'recite',
         name: 'recite-home',
         component: () => import('@/views/recite/ReciteHomePage.vue'),

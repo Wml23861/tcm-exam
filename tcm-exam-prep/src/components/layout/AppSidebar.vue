@@ -74,6 +74,7 @@ const navItems = [
   { path: '/flashcards', label: '闪卡记忆', icon: '忆', badge: null },
   { path: '/practice', label: '题库刷题', icon: '题', badge: null },
   { path: '/exam/setup', label: '模拟考试', icon: '试', badge: null },
+  { path: '/past-exams', label: '历年真题', icon: '历', badge: null },
   { path: '/recite', label: '背诵辅助', icon: '诵', badge: null },
   { path: '/videos', label: '视频学习', icon: '影', badge: null },
   { path: '/stats', label: '学习统计', icon: '览', badge: null },

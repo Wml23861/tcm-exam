@@ -15,6 +15,7 @@ async function main() {
   const tables = [
     'video_annotations', 'videos', 'notes', 'wrong_question_records',
     'review_schedules', 'study_records', 'exam_records', 'app_settings',
+    'past_exam_questions', 'past_exams',
     'flashcards', 'questions', 'knowledge_points', 'sections',
     'chapters', 'subjects',
   ]
@@ -43,6 +44,8 @@ async function main() {
   const { seed: seed17 } = await import('./seeds/022_massive_questions.ts')
   const { seed: seed18 } = await import('./seeds/024_massive_flashcards.ts')
   const { seed: seed19 } = await import('./seeds/023_more_questions.ts')
+  const { seed: seed20 } = await import('./seeds/030_a3_a4_b1_questions.ts')
+  const { seed: seedPastExams } = await import('./seeds/025_past_exams.ts')
 
   await seed1(db)
   await seed2(db)
@@ -64,6 +67,8 @@ async function main() {
   await seed17(db)
   await seed18(db)
   await seed19(db)
+  await seed20(db)
+  await seedPastExams(db)
 
   // 验证
   const sub = await db('subjects').count('* as c').first() as { c: number }

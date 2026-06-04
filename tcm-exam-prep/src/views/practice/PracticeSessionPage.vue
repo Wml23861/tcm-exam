@@ -99,7 +99,7 @@
           <div class="question-area">
             <!-- A1 / A2 questions -->
             <QuestionCard
-              v-if="currentItem.type !== 'B1'"
+              v-if="currentItem.type === 'A1' || currentItem.type === 'A2'"
               :type="currentQuestion.type"
               :question-stem="currentQuestion.questionStem"
               :options="currentQuestion.options"
@@ -110,6 +110,16 @@
               :selected-answer="getAnswer(currentQuestion.id)"
               :show-explanation="isSubmitted"
               @select="onSelectAnswer(currentQuestion.id, $event)"
+            />
+
+            <!-- A3/A4 question group -->
+            <A3A4QuestionGroup
+              v-else-if="currentItem.type === 'A3' || currentItem.type === 'A4'"
+              :type="currentItem.type as 'A3' | 'A4'"
+              :clinical-scenario="currentA3A4Group.clinicalScenario"
+              :sub-questions="currentA3A4Group.subQuestions"
+              :show-results="isSubmitted"
+              @answer="(qId: string, ans: string) => onSelectAnswer(qId, ans)"
             />
 
             <!-- B1 question group -->
@@ -195,11 +205,12 @@ import TcmEmpty from '@/components/ui/TcmEmpty.vue'
 import TcmSkeleton from '@/components/ui/TcmSkeleton.vue'
 import QuestionCard from '@/components/question/QuestionCard.vue'
 import B1QuestionGroup from '@/components/question/B1QuestionGroup.vue'
+import A3A4QuestionGroup from '@/components/question/A3A4QuestionGroup.vue'
 import QuestionNavigator from '@/components/question/QuestionNavigator.vue'
 
 interface FlatItem {
   questionId: string
-  type: 'A1' | 'A2' | 'B1'
+  type: 'A1' | 'A2' | 'B1' | 'A3' | 'A4'
   groupRootId?: string
 }
 
@@ -209,6 +220,20 @@ interface B1GroupData {
     id: string
     questionStem: string
     correctAnswer: string
+    userAnswer?: string | null
+    isCorrect?: boolean
+  }[]
+}
+
+interface A3A4GroupData {
+  clinicalScenario: string
+  subQuestions: {
+    id: string
+    questionStem: string
+    options: { key: string; text: string }[]
+    correctAnswer: string
+    explanation: string
+    difficulty: number
     userAnswer?: string | null
     isCorrect?: boolean
   }[]
@@ -288,6 +313,47 @@ const currentB1Group = computed<B1GroupData>(() => {
     return { sharedOptions: [], subQuestions: [] }
   }
   return buildB1GroupData(currentItem.value.groupRootId)
+})
+
+// --- A3/A4 group data ---
+const a3a4GroupCache = new Map<string, A3A4GroupData>()
+
+function buildA3A4GroupData(rootId: string): A3A4GroupData {
+  const cached = a3a4GroupCache.get(rootId)
+  if (cached) return cached
+
+  const root = questionMap.value[rootId]
+  const subIds = flatItems.value
+    .filter(item => item.groupRootId === rootId)
+    .map(item => item.questionId)
+
+  const subQuestions = subIds.map(id => {
+    const q = questionMap.value[id]
+    return {
+      id: q.id,
+      questionStem: q.questionStem,
+      options: q.options,
+      correctAnswer: q.correctAnswer,
+      explanation: q.explanation,
+      difficulty: q.difficulty,
+      userAnswer: answers[id] ?? null,
+      isCorrect: isSubmitted ? answers[id] === q.correctAnswer : undefined,
+    }
+  })
+
+  const data: A3A4GroupData = {
+    clinicalScenario: root?.questionStem ?? '',
+    subQuestions,
+  }
+  a3a4GroupCache.set(rootId, data)
+  return data
+}
+
+const currentA3A4Group = computed<A3A4GroupData>(() => {
+  if ((currentItem.value.type !== 'A3' && currentItem.value.type !== 'A4') || !currentItem.value.groupRootId) {
+    return { clinicalScenario: '', subQuestions: [] }
+  }
+  return buildA3A4GroupData(currentItem.value.groupRootId)
 })
 
 // --- Answer tracking ---
@@ -391,6 +457,7 @@ function goToPrev(): void {
 async function submitAll(): Promise<void> {
   isSubmitted.value = true
   b1GroupCache.clear()
+  a3a4GroupCache.clear()
 
   // Save wrong answers
   const subjectId = getQueryString('subjectId')
@@ -444,6 +511,7 @@ function resetSession(): void {
   isComplete.value = false
   currentIndex.value = 0
   b1GroupCache.clear()
+  a3a4GroupCache.clear()
   for (const key of Object.keys(answers)) {
     delete answers[key]
   }
@@ -516,34 +584,34 @@ async function loadQuestions(): Promise<void> {
 
     // Build flat display items
     const items: FlatItem[] = []
-    const b1RootIds = new Set<string>()
-    const b1SubIdsByRoot: Record<string, string[]> = {}
+    const groupRootIds = new Set<string>()
+    const subIdsByRoot: Record<string, string[]> = {}
 
-    // First pass: identify B1 structure
+    // First pass: identify group structure (B1 + A3 + A4)
     for (const q of allFetched) {
-      if (q.type === 'B1') {
+      if (q.type === 'B1' || q.type === 'A3' || q.type === 'A4') {
         if (q.isGroupRoot) {
-          b1RootIds.add(q.id)
+          groupRootIds.add(q.id)
         } else if (q.groupId) {
-          if (!b1SubIdsByRoot[q.groupId]) {
-            b1SubIdsByRoot[q.groupId] = []
+          if (!subIdsByRoot[q.groupId]) {
+            subIdsByRoot[q.groupId] = []
           }
-          b1SubIdsByRoot[q.groupId].push(q.id)
+          subIdsByRoot[q.groupId].push(q.id)
         }
       }
     }
 
     // Second pass: build flat items
     for (const q of allFetched) {
-      if (q.type === 'B1') {
+      if (q.type === 'B1' || q.type === 'A3' || q.type === 'A4') {
         if (!q.isGroupRoot) {
           items.push({
             questionId: q.id,
-            type: 'B1',
+            type: q.type,
             groupRootId: q.groupId ?? undefined,
           })
         }
-        // Skip B1 roots - they are not directly answerable
+        // Skip group roots - they are not directly answerable
       } else {
         items.push({
           questionId: q.id,

@@ -11,6 +11,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    A3A4QuestionGroup: typeof import('./components/question/A3A4QuestionGroup.vue')['default']
     AcupointIllustration: typeof import('./components/recite/AcupointIllustration.vue')['default']
     AcupointImage: typeof import('./components/recite/AcupointImage.vue')['default']
     AppBreadcrumb: typeof import('./components/layout/AppBreadcrumb.vue')['default']

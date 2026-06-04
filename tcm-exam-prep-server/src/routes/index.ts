@@ -8,6 +8,7 @@ import { studyRoutes } from './study.routes.js'
 import { examRoutes } from './exam.routes.js'
 import { wrongQuestionRoutes } from './wrong-question.routes.js'
 import { noteRoutes } from './note.routes.js'
+import { pastExamRoutes } from './past-exam.routes.js'
 import { videoRoutes } from './video.routes.js'
 import { settingsRoutes } from './settings.routes.js'
 import { aiRoutes } from './ai.routes.js'
@@ -27,6 +28,7 @@ router.use('/flashcards', flashcardRoutes)
 // 用户数据（需登录）
 router.use('/', studyRoutes)       // /api/study-records, /api/review-schedules
 router.use('/', examRoutes)        // /api/exam-records
+router.use('/', pastExamRoutes)   // /api/past-exams
 router.use('/', wrongQuestionRoutes) // /api/wrong-questions
 router.use('/', noteRoutes)        // /api/notes
 router.use('/', videoRoutes)       // /api/videos
