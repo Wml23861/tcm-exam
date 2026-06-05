@@ -12,6 +12,7 @@ import { pastExamRoutes } from './past-exam.routes.js'
 import { videoRoutes } from './video.routes.js'
 import { settingsRoutes } from './settings.routes.js'
 import { aiRoutes } from './ai.routes.js'
+import { realExamRoutes } from './real-exam.routes.js'
 import { aiConversationRoutes } from './ai-conversation.routes.js'
 
 const router = Router()
@@ -30,6 +31,7 @@ router.use('/', studyRoutes)       // /api/study-records, /api/review-schedules
 router.use('/', examRoutes)        // /api/exam-records
 router.use('/', pastExamRoutes)   // /api/past-exams
 router.use('/', wrongQuestionRoutes) // /api/wrong-questions
+router.use('/real-exam', realExamRoutes)
 router.use('/', noteRoutes)        // /api/notes
 router.use('/', videoRoutes)       // /api/videos
 router.use('/', settingsRoutes)    // /api/settings

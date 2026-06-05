@@ -91,6 +91,25 @@ export const routes: RouteRecordRaw[] = [
         meta: { title: '错题分析' },
       },
       {
+        path: 'real-exam',
+        name: 'real-exam-entry',
+        component: () => import('@/views/exam/RealExamEntryPage.vue'),
+        meta: { title: '真实模考' },
+      },
+      {
+        path: 'real-exam/session',
+        name: 'real-exam-session',
+        component: () => import('@/views/exam/RealExamSessionPage.vue'),
+        meta: { title: '模考中' },
+      },
+      {
+        path: 'real-exam/result/:examId',
+        name: 'real-exam-result',
+        component: () => import('@/views/exam/RealExamResultPage.vue'),
+        props: true,
+        meta: { title: '模考成绩' },
+      },
+      {
         path: 'exam/setup',
         name: 'exam-setup',
         component: () => import('@/views/exam/MockExamSetupPage.vue'),
