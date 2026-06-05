@@ -31,10 +31,21 @@
         </TcmCard>
 
         <TcmCard title="章节失分分析" class="mt-16">
-          <div v-for="(v, k) in detail.stats.byChapter" :key="k" class="chapter-row" v-show="(v as any).wrong > 0">
-            <span class="chap-name">{{ v.chapterTitle || k }}</span>
-            <span class="chap-wrong">{{ (v as any).wrong }}错/{{ (v as any).total }}题</span>
-            <TcmProgress :percent="((v as any).total - (v as any).wrong)/(v as any).total*100" :show-label="false" color="var(--tcm-primary-500)" />
+          <div v-for="(v, k) in detail.stats.byChapter" :key="k" class="chapter-group" v-show="(v as any).total > 0">
+            <div class="chapter-header-row" @click="toggleChapter(k)">
+              <span class="chap-expand">{{ expandedChapters.has(k) ? '▾' : '▸' }}</span>
+              <span class="chap-name">{{ v.chapterTitle || k }}</span>
+              <span class="chap-wrong">{{ (v as any).wrong }}错/{{ (v as any).total }}题</span>
+              <TcmProgress :percent="((v as any).total - (v as any).wrong)/(v as any).total*100" :show-label="false" color="var(--tcm-primary-500)" />
+            </div>
+            <div v-if="expandedChapters.has(k)" class="chapter-questions">
+              <div v-for="(a, idx) in getChapterQuestions(k)" :key="a.questionId" class="chap-q-item">
+                <span :class="['chap-q-dot', a.isCorrect ? 'dot-ok' : 'dot-err']">{{ a.isCorrect ? '✓' : '✗' }}</span>
+                <span class="chap-q-num">第{{ idx + 1 }}题</span>
+                <span class="chap-q-stem">{{ getQuestionBrief(a.questionId) }}</span>
+                <span v-if="!a.isCorrect" class="chap-q-answer">你的:{{ a.userAnswer || '未答' }} 正确:{{ getCorrectAnswerForQ(a.questionId) }}</span>
+              </div>
+            </div>
           </div>
         </TcmCard>
       </div>
@@ -129,6 +140,7 @@ const detail = ref<any>(null)
 const trendData = ref<any[]>([])
 const activeTab = ref('radar')
 const expandedReviews = reactive(new Set<number>())
+const expandedChapters = reactive(new Set<string>())
 const tabs = [
   { key: 'radar', label: '薄弱点' },
   { key: 'review', label: '逐题复盘' },
@@ -156,6 +168,21 @@ function rateColor(r: number): string { return r >= 0.8 ? '#2E5E4E' : r >= 0.6 ?
 function formatTime(s: number): string { const m = Math.floor(s/60); const sec = s%60; return m+'分'+sec+'秒' }
 function formatDate(ts: number): string { return new Date(ts).toLocaleDateString('zh-CN') }
 function toggleReview(i: number): void { expandedReviews.has(i) ? expandedReviews.delete(i) : expandedReviews.add(i) }
+function toggleChapter(k: string): void { expandedChapters.has(k) ? expandedChapters.delete(k) : expandedChapters.add(k) }
+function getChapterQuestions(chapterId: string): any[] {
+  return (detail.value?.answers || []).filter((a: any) => {
+    const q = (detail.value?.questions || []).find((q: any) => q.id === a.questionId)
+    return q && q.chapterId === chapterId
+  })
+}
+function getQuestionBrief(qid: string): string {
+  const q = (detail.value?.questions || []).find((q: any) => q.id === qid)
+  return q ? q.questionStem?.substring(0, 40) + (q.questionStem?.length > 40 ? '...' : '') : ''
+}
+function getCorrectAnswerForQ(qid: string): string {
+  const q = (detail.value?.questions || []).find((q: any) => q.id === qid)
+  return q?.correctAnswer || ''
+}
 function handlePrint(): void { window.print() }
 
 function getQ(idx: number): any { return detail.value?.questions?.find((q: any) => q.id === detail.value.answers[idx].questionId) }
@@ -178,7 +205,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.real-exam-result { max-width: 1200px; }
+.real-exam-result { max-width: 1400px; }
 .score-hero { display: flex; align-items: center; gap: 24px; padding: 32px; background: var(--tcm-bg-surface); border-radius: var(--tcm-radius-lg); margin-bottom: 24px; border: 1px solid var(--tcm-border-light); }
 .score-circle { width: 100px; height: 100px; border-radius: 50%; border: 4px solid; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .score-num { font-size: 36px; font-weight: 700; line-height: 1; }
@@ -186,18 +213,29 @@ onMounted(async () => {
 .score-info h1 { font-family: var(--tcm-font-decorative); font-size: var(--tcm-font-2xl); margin: 0; }
 .score-info p { color: var(--tcm-text-secondary); margin: 4px 0 0; }
 .result-layout { display: flex; gap: 24px; align-items: flex-start; }
-.result-left { width: 420px; flex-shrink: 0; }
+.result-left { width: 480px; flex-shrink: 0; }
 .result-right { flex: 1; min-width: 0; }
-@media (max-width: 900px) { .result-layout { flex-direction: column; } .result-left { width: 100%; } }
+@media (max-width: 1000px) { .result-layout { flex-direction: column; } .result-left { width: 100%; } }
 .stats-table { width: 100%; border-collapse: collapse; font-size: var(--tcm-font-sm); }
 .stats-table th { background: var(--tcm-bg-base); padding: 8px 10px; text-align: left; font-weight: 600; }
 .stats-table td { padding: 8px 10px; border-bottom: 1px solid var(--tcm-border-light); }
 .subj-name { font-weight: 500; }
 .wrong-cell { color: var(--tcm-error); font-weight: 600; }
 .mt-16 { margin-top: 16px; }
-.chapter-row { display: flex; align-items: center; gap: 12px; padding: 6px 0; }
-.chap-name { font-size: var(--tcm-font-sm); min-width: 80px; }
+.chapter-group { border-bottom: 1px solid var(--tcm-border-light); }
+.chapter-header-row { display: flex; align-items: center; gap: 8px; padding: 10px 0; cursor: pointer; }
+.chapter-header-row:hover { background: var(--tcm-bg-base); }
+.chap-expand { width: 16px; font-size: 12px; color: var(--tcm-text-disabled); }
+.chap-name { font-size: var(--tcm-font-sm); font-weight: 500; min-width: 100px; flex: 1; }
 .chap-wrong { font-size: var(--tcm-font-xs); color: var(--tcm-error); min-width: 70px; }
+.chapter-questions { padding: 0 0 8px 20px; }
+.chap-q-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: var(--tcm-font-xs); border-bottom: 1px dashed var(--tcm-border-light); }
+.chap-q-dot { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 10px; flex-shrink: 0; }
+.dot-ok { background: #E8F5E9; color: var(--tcm-jade-500); }
+.dot-err { background: #FFEBEE; color: var(--tcm-error); }
+.chap-q-num { color: var(--tcm-text-disabled); min-width: 40px; }
+.chap-q-stem { flex: 1; color: var(--tcm-text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chap-q-answer { color: var(--tcm-error); white-space: nowrap; font-size: 11px; }
 .tab-bar { display: flex; gap: 4px; margin-bottom: 16px; }
 .tab-btn { padding: 8px 18px; border: 1px solid var(--tcm-border); border-radius: var(--tcm-radius-sm); background: var(--tcm-bg-surface); cursor: pointer; font-family: inherit; font-size: var(--tcm-font-sm); }
 .tab-btn.active { background: var(--tcm-primary-500); color: #fff; border-color: var(--tcm-primary-500); }

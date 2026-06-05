@@ -19,7 +19,7 @@ export const realExamService = {
       for (const [subjectId, count] of Object.entries(subjects)) {
         const pool = await db('questions')
           .where({ subject_id: subjectId })
-          .where('is_group_root', 0)
+          .whereNot({ is_group_root: 1 }).whereNotNull("correct_answer").where("correct_answer", "!=", "").whereNotNull("options_json").where("options_json", "!=", "[]").where("options_json", "!=", "")
           .whereNotNull('correct_answer')
           .where('correct_answer', '!=', '')
           .orderByRaw('RANDOM()')
@@ -94,7 +94,7 @@ export const realExamService = {
     const allQuestions = await db('questions').whereIn('id', answers.map(a => a.questionId))
     const questionMap = new Map(allQuestions.map(q => [q.id, q]))
 
-    let correctCount = 0
+    let correctCount = 0; const totalQuestions = answers.length
     const answerDetails = answers.map(a => {
       const q = questionMap.get(a.questionId)
       const isCorrect = q ? a.userAnswer === q.correct_answer : false
@@ -108,7 +108,7 @@ export const realExamService = {
       }
     })
 
-    const score = totalQuestions > 0 ? Math.round((correctCount / answers.length) * 100) : 0
+    const score = correctCount
     const duration = Math.floor((Date.now() - record.start_time) / 1000)
 
     await db('real_exam_records').where({ id: examId }).update({
