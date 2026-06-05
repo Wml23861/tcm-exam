@@ -539,8 +539,34 @@ async function loadQuestions(): Promise<void> {
     const typesStr = getQueryString('types')
     const difficultiesStr = getQueryString('difficulties')
     const countStr = getQueryString('count')
+    const tagsFilter = getQueryString('tags')
+    const allMode = getQueryString('all')
 
     if (!subjectId || !typesStr) {
+      // 真题模式：加载所有科目的真题
+      if (allMode === 'true' && tagsFilter === '真题') {
+        const allQ = await questionRepo.findAll()
+        const examQ = allQ.filter(q => {
+          try { return (q.tags || []).includes('真题') } catch { return false }
+        })
+        const target = countStr ? parseInt(countStr, 10) : 150
+        const finalQ = pickRandom(examQ.length > 0 ? examQ : allQ.slice(0, target), target)
+        // 让后续代码处理：构建questionMap + flat items
+        allQuestions.value = finalQ
+        const qMap: Record<string, Question> = {}
+        for (const q of finalQ) { qMap[q.id] = q }
+        questionMap.value = qMap
+        const items: FlatItem[] = []
+        for (const q of finalQ) {
+          if (!q.isGroupRoot) { items.push({ questionId: q.id, type: q.type, groupRootId: q.groupId || undefined }) }
+        }
+        flatItems.value = items
+        currentIndex.value = 0
+        marked.clear()
+        a3a4GroupCache.clear()
+        isLoading.value = false
+        return
+      }
       isLoading.value = false
       return
     }

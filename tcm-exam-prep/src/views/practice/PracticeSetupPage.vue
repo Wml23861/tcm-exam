@@ -106,8 +106,15 @@
       </div>
     </TcmCard>
 
-    <!-- 错题本快捷入口 -->
+    <!-- 快捷入口 -->
     <div class="quick-links">
+      <TcmCard hoverable @click="goToPastExams">
+        <div class="quick-link-content">
+          <span class="quick-link-title">历年真题</span>
+          <span class="quick-link-desc">2020-2024年真题练习 (4单元)</span>
+          <span class="quick-link-arrow">&#x2192;</span>
+        </div>
+      </TcmCard>
       <TcmCard hoverable @click="goToWrongQuestions">
         <div class="quick-link-content">
           <span class="quick-link-title">错题本</span>
@@ -215,6 +222,10 @@ function startPractice(): void {
     params.difficulties = selectedDifficulties.value.join(',')
   }
   router.push({ name: 'practice-session', query: params })
+}
+
+function goToPastExams(): void {
+  router.push({ name: 'practice-session', query: { tags: '真题', all: 'true' } })
 }
 
 function goToWrongQuestions(): void {

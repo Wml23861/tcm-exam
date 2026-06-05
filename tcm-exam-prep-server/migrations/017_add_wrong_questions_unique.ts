@@ -24,10 +24,14 @@ export async function up(knex: Knex): Promise<void> {
     }
   }
 
-  // 添加唯一约束防止新重复
-  await knex.schema.alterTable('wrong_question_records', (t) => {
-    t.unique(['user_id', 'question_id'])
-  })
+  // 添加唯一约束防止新重复（幂等：已存在则跳过）
+  try {
+    await knex.schema.alterTable('wrong_question_records', (t) => {
+      t.unique(['user_id', 'question_id'])
+    })
+  } catch {
+    // 唯一约束已存在，跳过
+  }
 }
 
 export async function down(knex: Knex): Promise<void> {

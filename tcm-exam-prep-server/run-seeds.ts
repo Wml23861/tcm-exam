@@ -45,7 +45,11 @@ async function main() {
   const { seed: seed18 } = await import('./seeds/024_massive_flashcards.ts')
   const { seed: seed19 } = await import('./seeds/023_more_questions.ts')
   const { seed: seed20 } = await import('./seeds/030_a3_a4_b1_questions.ts')
-  const { seed: seedPastExams } = await import('./seeds/025_past_exams.ts')
+  const { seed: seed25 } = await import('./seeds/040_past_exam_unit1.ts')
+  const { seed: seed26 } = await import('./seeds/041_past_exam_unit2.ts')
+  const { seed: seed27 } = await import('./seeds/042_past_exam_unit3.ts')
+  const { seed: seed28 } = await import('./seeds/043_past_exam_unit4.ts')
+  const { seed: seed29 } = await import('./seeds/050_past_exam_metadata.ts')
 
   await seed1(db)
   await seed2(db)
@@ -68,7 +72,11 @@ async function main() {
   await seed18(db)
   await seed19(db)
   await seed20(db)
-  await seedPastExams(db)
+  await seed25(db)
+  await seed26(db)
+  await seed27(db)
+  await seed28(db)
+  await seed29(db)
 
   // 验证
   const sub = await db('subjects').count('* as c').first() as { c: number }
